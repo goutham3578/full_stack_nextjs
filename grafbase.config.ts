@@ -1,28 +1,30 @@
-import { g, auth, config } from '@grafbase/sdk'
+import { g, auth, config } from '@grafbase/sdk';
 
-const User = g.model('User', {
+// Define User model
+const User = {
   name: g.string().length({ min: 2, max: 20 }),
   email: g.string().unique(),
   avatarUrl: g.url(),
   description: g.string(),
   githuburl: g.url().optional(),
   linkedInUrl: g.url().optional(),
-  projects: g.relation(() => Project).list().optional(),
-})
+};
 
-const Project = g.model('Project', {
+// Define Project model
+const Project = {
   title: g.string().length({ min: 3 }),
   description: g.string(),
   image: g.url(),
   liveSiteUrl: g.url(),
-  githubUtl: g.url(),
+  githubUrl: g.url(),
   category: g.string().search(),
-  createdBy: g.relation(() => User),
-})
+  createdBy: User, // Assuming User is the creator of a project
+};
 
+// Define configuration object
 const userConfig = {
-  schema: g, // Assuming 'schema' should be the defined User model
+  schema: g,
   // Add any other configuration options here if needed
-}
+};
 
-export default config(userConfig); // Passing the configuration object to the config function
+export default config(userConfig);
